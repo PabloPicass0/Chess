@@ -13,17 +13,44 @@ int main() {
 	ChessBoard cb;
 	cout << '\n';
 
+	cb.printBoard();
+
+	/*
+	cb.submitMove("E1", "F2");
+	cb.submitMove("E8", "D8");
+        cb.submitMove("F2", "D3");
+	cb.submitMove("F2", "F1");
+	cb.submitMove("G5", "H5");
+	cb.submitMove("F1", "B6");
+	cb.submitMove("F1", "A6");
+
+	cout << '\n';
+	
+	cb.printBoard();
+	*/
+
+	
 	cb.submitMove("D7", "D6");
 	cout << '\n';
+
+	cb.printBoard();
 
 	cb.submitMove("D4", "H6");
 	cout << '\n';
 
+	cb.printBoard();
+
 	cb.submitMove("D2", "D4");
 	cout << '\n';
 
+	cb.printBoard();
+
 	cb.submitMove("F8", "B4");
 	cout << '\n';
+
+	cb.printBoard();
+
+	/*
 
 	cout << "=========================\n";
 	cout << "Alekhine vs. Vasic (1931)\n";
@@ -74,6 +101,7 @@ int main() {
 
 	cb.submitMove("D3", "G6");
 	cout << '\n';
+	*/
 
 	return 0;
 }
