@@ -19,6 +19,7 @@ class ChessPiece {
   virtual color get_color();
   virtual std::string get_name();
   virtual std::string get_initials();
+  virtual void set_pieceHasMoved();
   virtual bool validMove(int source_file, int source_rank, int destination_file, int destination_rank, bool captures_piece) = 0;
 };
 

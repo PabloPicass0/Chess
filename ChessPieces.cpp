@@ -19,7 +19,11 @@ string ChessPiece::get_name() {
 string ChessPiece::get_initials() {
   return pieceName.substr(0, 2);
 }
- 
+
+void ChessPiece::set_pieceHasMoved() {
+  pieceHasMoved = true;
+}
+
 /**************************************** King ***************************************/
 
 King::King(color color) : ChessPiece("King", color) {

@@ -29,7 +29,7 @@ int main() {
 	cb.printBoard();
 	*/
 
-	
+	/*
 	cb.submitMove("D7", "D6");
 	cout << '\n';
 
@@ -49,15 +49,16 @@ int main() {
 	cout << '\n';
 
 	cb.printBoard();
+	*/
 
-	/*
+	
 
 	cout << "=========================\n";
 	cout << "Alekhine vs. Vasic (1931)\n";
 	cout << "=========================\n\n";
 
-	cb.resetBoard();
-	cout << '\n';
+	//cb.resetBoard();
+	//cout << '\n';
 
 	cb.submitMove("E2", "E4");
 	cb.submitMove("E7", "E6");
@@ -101,7 +102,8 @@ int main() {
 
 	cb.submitMove("D3", "G6");
 	cout << '\n';
-	*/
 
+	cb.printBoard();
+	
 	return 0;
 }

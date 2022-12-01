@@ -20,11 +20,14 @@ class ChessBoard {
   bool submitMove(const char source_square[2], const char destination_square[2]);
   /* submits a move on the board; returns true if move has been set; false if move is invalid */
 
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  bool preMove(const char source_square[2], const char destination_square[2]);
   /* helper function for submitMove to validate if move is ok */
 
   bool isBlocked(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
   /* helper function that checks if the move of the piece is blocked */
+
+  bool opponentHit(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  /* helper function that checks if an opponent piece is captured */
 
  private:
 
