@@ -1,5 +1,6 @@
 #include <iostream>
 #include "ChessPieces.h"
+#include "ChessBoard.h"
 #include <string>
 
 using namespace std;
@@ -129,7 +130,7 @@ Pawn::Pawn(color color) : ChessPiece("Pawn", color) {
 }
 
 //Pawn makeMove validator
-bool Pawn::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool Pawn::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool piece_captured) {
 
   int move_direction = 1; //black pawns can only move up
   if (pieceColor == White)
@@ -139,15 +140,15 @@ bool Pawn::validMove(const int source_file, const int source_rank, const int des
   int file_move = destination_file - source_file;
 
   //pawn moves one forward
-  if (rank_move == 1 && file_move == 0 && !captures_piece)
+  if (rank_move == 1 && file_move == 0 && !piece_captured)
     return true;
 
   //pawn moves two forward
-  if (rank_move == 2 && file_move == 0 && !captures_piece)
+  if (rank_move == 2 && file_move == 0 && !piece_captured && !pieceHasMoved)
     return true;
 
   //pawn captures piece
-  if (rank_move == 1 && abs(file_move) == 1 && captures_piece)
+  if (rank_move == 1 && abs(file_move) == 1 && piece_captured)
     return true;
 
   return false;

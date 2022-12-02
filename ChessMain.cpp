@@ -15,32 +15,33 @@ int main() {
 
 	cb.printBoard();
 
-	/*
-	cb.submitMove("E1", "F2");
-	cb.submitMove("E8", "D8");
-        cb.submitMove("F2", "D3");
-	cb.submitMove("F2", "F1");
-	cb.submitMove("G5", "H5");
-	cb.submitMove("F1", "B6");
-	cb.submitMove("F1", "A6");
+	
+	cb.submitMove("D2", "D4");
+	cb.submitMove("D7", "D5");
+        cb.submitMove("E2", "E4");
+	cb.submitMove("D5", "E4");
+	cb.submitMove("D1", "F3");
+	cb.submitMove("D8", "D4");
+	cb.submitMove("E1", "D1");
+        cb.submitMove("H2", "H4");
 
 	cout << '\n';
 	
 	cb.printBoard();
-	*/
+	
 
 	/*
-	cb.submitMove("D7", "D6");
+	cb.submitMove("G1", "F3");
 	cout << '\n';
 
 	cb.printBoard();
 
-	cb.submitMove("D4", "H6");
+	cb.submitMove("H7", "H6");
 	cout << '\n';
 
 	cb.printBoard();
 
-	cb.submitMove("D2", "D4");
+	cb.submitMove("F3", "D4");
 	cout << '\n';
 
 	cb.printBoard();
@@ -49,32 +50,42 @@ int main() {
 	cout << '\n';
 
 	cb.printBoard();
-	*/
-
 	
-
+	*/
+	
+        /*
 	cout << "=========================\n";
 	cout << "Alekhine vs. Vasic (1931)\n";
 	cout << "=========================\n\n";
 
-	//cb.resetBoard();
-	//cout << '\n';
+	
+	cb.resetBoard();
+	cout << '\n';
+	
 
 	cb.submitMove("E2", "E4");
 	cb.submitMove("E7", "E6");
 	cout << '\n';
 
+	cb.printBoard();
+
 	cb.submitMove("D2", "D4");
 	cb.submitMove("D7", "D5");
 	cout << '\n';
+
+	cb.printBoard();
 
 	cb.submitMove("B1", "C3");
 	cb.submitMove("F8", "B4");
 	cout << '\n';
 
+	cb.printBoard();
+
 	cb.submitMove("F1", "D3");
 	cb.submitMove("B4", "C3");
 	cout << '\n';
+
+	cb.printBoard();
 
 	cb.submitMove("B2", "C3");
 	cb.submitMove("H7", "H6");
@@ -102,8 +113,7 @@ int main() {
 
 	cb.submitMove("D3", "G6");
 	cout << '\n';
-
-	cb.printBoard();
+	*/
 	
 	return 0;
 }
