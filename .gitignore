@@ -1,0 +1,9 @@
+# Object files
+*.o
+
+# Executable for this exercise
+chess
+
+# Emacs Temp Files
+[#]*[#]
+[*]*[*]

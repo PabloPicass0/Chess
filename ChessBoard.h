@@ -17,11 +17,41 @@ class ChessBoard {
   
   ChessBoard();
   /* Chessboard default constructor that sets up chess board */
-
+  
+  void resetBoard();
+  
   void printBoard();
 
   bool submitMove(const char source_square[2], const char destination_square[2]);
   /* submits a move on the board; returns true if move has been set; false if move is invalid */
+
+ private:
+
+  ChessPiece* pieces[MAX_RANK_SIZE][MAX_FILE_SIZE];        //pieces ptr_array
+  color isTurn;
+  enum gameState {Over = 0, Ongoing = 1};
+  gameState chessBoardState;
+
+  void populate(color pieces_color);
+
+  void removePieces();
+
+  void printRank(int rank_num);
+
+  bool opponentHit(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  /* helper function that checks if an opponent piece is captured */
+
+  bool isCheck(color thisColor);
+  /* helper function that helps determine if a party is in check */
+
+  bool hasLegalMove(color waiting_color);
+  /* checks if a color still has a next valid move */
+
+  void makeMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  /* conducts move by setting pointers */
+
+  void reverseMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, ChessPiece* ptr_moved);
+  /* reverses move if it would have set own king in check */
 
   bool preMove(const char source_square[2], const char destination_square[2]);
   /* helper function for submitMove to validate if move is ok */
@@ -31,28 +61,6 @@ class ChessBoard {
 		  
   bool isBlocked(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
   /* helper function that checks if the move of the piece is blocked */
-
-  bool opponentHit(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
-  /* helper function that checks if an opponent piece is captured */
-
-  bool isCheck(color thisColor);
-  /* helper function that helps determine if a party is in check */
-
-  void makeMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
-  /* conducts move by setting pointers */
-
-  void reverseMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, ChessPiece* ptr_moved);
-  /* reverses move if it would have set own king in check */
-
- private:
-
-  ChessPiece* pieces[MAX_RANK_SIZE][MAX_FILE_SIZE];//pieces ptr_array
-
-  color isTurn;
-
-  void populate(color pieces_color);
-
-  void printRank(int rank_num);
 };
 
 #endif

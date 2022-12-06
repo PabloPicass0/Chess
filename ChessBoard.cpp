@@ -9,15 +9,9 @@ using namespace std;
 
 /* ChessBoard constructor populating a board with black and white pieces on initial positions */
 ChessBoard::ChessBoard() : pieces() { //create empty board --> calling just pieces() makes all pointers point to null
-  /*
-   for (int rank = 0; rank < MAX_RANK_SIZE; rank++)
-    for (int file = 0; file < MAX_FILE_SIZE; file++)
-      {
-	pieces[rank][file] = NULL;
-      }
-  */
   populate(Black);
   populate(White);
+  chessBoardState = Ongoing;
   isTurn = White;
   cout << "A new chess game is started!\n";
 }
@@ -36,9 +30,32 @@ void ChessBoard::populate(color pieces_color) {
   pieces[rankCourt][6] = new Knight(pieces_color);
   pieces[rankCourt][7] = new Castle(pieces_color);
   
-  for (int file = 0; file < MAX_FILE_SIZE; file++)
+  for (int file = 0; file < MAX_FILE_SIZE; file++) {
     pieces[rankPawn][file] = new Pawn(pieces_color);
-} 
+  }
+}
+
+/* deletes pieces and makes pointers point to null */
+void ChessBoard::removePieces() {
+  for (int rank = 0; rank < MAX_RANK_SIZE; rank++) {
+    for (int file = 0; file < MAX_FILE_SIZE; file++) {
+      delete pieces[rank][file];
+      pieces[rank][file] = NULL;
+    }
+  }
+}
+
+/* destroys all picees and populates board with new pieces  */
+void ChessBoard::resetBoard() {
+  removePieces();
+
+  populate(Black);
+  populate(White);
+  chessBoardState = Ongoing;
+  isTurn = White;
+  cout << "A new chess game is started!\n";
+}
+
 
 /* prints ChessBoard with initials of pieces to show where pieces are moving */
 void ChessBoard::printBoard() {
@@ -63,11 +80,6 @@ void ChessBoard::printRank(int rank_num) {
   }
   cout << "|\n";
 }
-
-/*getter function retrieving pointer to a board position 
-ChessPiece* ChessBoard::boardSquare(int rank, int file) {
-  return pieces[rank][file];
-  } */
 
 //overrides ostream operator to cout enum values
 std::ostream& operator << (std::ostream& out_stream, color piece_color) {
@@ -94,13 +106,13 @@ bool ChessBoard::preMove(const char source_square[2], const char destination_squ
   
   //checks if source square is out of range
   if (source_file < 0 || source_file > 7 || source_rank < 0 || source_rank > 7) {
-    cout << source_square << " is out of range!\n";
+    cout << source_square << " is an invalid position!\n";
     return false;
   }
 
   //checks if destination square is out of range
   if (destination_file < 0 || destination_file > 7 || destination_rank < 0 || destination_rank > 7) {
-    cout << destination_square << " is out of range!\n";
+    cout << destination_square << " is an invalid position!\n";
     return false;
   }
 
@@ -129,15 +141,15 @@ bool ChessBoard::preMove(const char source_square[2], const char destination_squ
 }
 
 //Checks wether the particular piece can actually conduct this move
-bool ChessBoard::actualMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
-
-  if (isBlocked(source_file, source_rank, destination_file, destination_rank)) {
-    return false;
-  }
+bool ChessBoard::actualMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank) { 
 
   bool piece_captured = opponentHit(source_file, source_rank, destination_file, destination_rank);
 
   if (!(pieces[source_rank][source_file]->validMove(source_file, source_rank, destination_file, destination_rank, piece_captured))) {
+    return false;
+  }
+
+  if (isBlocked(source_file, source_rank, destination_file, destination_rank)) {
     return false;
   }
 
@@ -148,7 +160,13 @@ bool ChessBoard::actualMove(const int source_file, const int source_rank, const 
 //Checks whether the move of a piece is blocked by another piece
 bool ChessBoard::isBlocked(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
   
-  if (pieces[source_rank][source_file]->get_name() == "Knight")  //knights can jump
+  if (pieces[destination_rank][destination_file] != NULL) {
+    if (pieces[destination_rank][destination_file]->get_color() == pieces[source_rank][source_file]->get_color()) {
+      return true;
+    }
+  }
+
+  if (pieces[source_rank][source_file]->get_name() == "Knight")  //Knights can jump
     return false;
  
   int rank_move = destination_rank - source_rank;
@@ -172,18 +190,7 @@ bool ChessBoard::isBlocked(const int source_file, const int source_rank, const i
 
   for (int count = 1; count < max(abs(rank_move), abs(file_move)); count++) {
     if (pieces[source_rank + rank_factor * count][source_file + file_factor * count] != NULL) { 
-      /*
-      cout << "The move of " << isTurn << "' " << pieces[source_rank][source_file]->get_name() << " is blocked by "
-	   << pieces[source_rank + rank_factor * count][source_file + file_factor * count]->get_color() << "' "
-	   << pieces[source_rank + rank_factor * count][source_file + file_factor * count]->get_name() << "!\n";
-      */
       return true;
-    }
-  }
-
-  if (pieces[destination_rank][destination_file] != NULL) {
-    if (pieces[destination_rank][destination_file]->get_color() == pieces[source_rank][source_file]->get_color()) {
-    return true;
     }
   }
   
@@ -201,20 +208,52 @@ bool ChessBoard::opponentHit(const int source_file, const int source_rank, const
   return false;
 }
 
+//checks if a given color has a next move
+bool ChessBoard::hasLegalMove(color waiting_color) {
+  
+  ChessPiece* ptr_moved = nullptr;
+  
+  for (int source_rank = 0; source_rank < MAX_RANK_SIZE; source_rank++) {
+    for (int source_file = 0; source_file < MAX_FILE_SIZE; source_file++) {
+      if (pieces[source_rank][source_file] != NULL) {
+	if (pieces[source_rank][source_file]->get_color() == waiting_color) {
+	  for (int destination_rank = 0; destination_rank < MAX_RANK_SIZE; destination_rank++) {
+	    for (int destination_file = 0; destination_file < MAX_FILE_SIZE; destination_file++) {
+	      if (actualMove(source_file, source_rank, destination_file, destination_rank)) {
+		ptr_moved = pieces[destination_rank][destination_file];
+		makeMove(source_file, source_rank, destination_file, destination_rank);
+		if (!isCheck(waiting_color)) {
+		  reverseMove(source_file, source_rank, destination_file, destination_rank, ptr_moved);
+		  return true;
+		}
+		if (isCheck(waiting_color)) {
+		  reverseMove(source_file, source_rank, destination_file, destination_rank, ptr_moved);
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+  return false;
+}
+
+
 //checks if one of both parties is in check
 bool ChessBoard::isCheck(color thisColor) {
 
-  int king_rank, king_file;
+  int king_rank(-1), king_file(-1);
 
   //find King rank and file position;
-  for (int rank = 0; rank < MAX_RANK_SIZE; rank++) {
-    for (int file = 0; file < MAX_FILE_SIZE; file++) {
+  for (int rank = 0; rank < MAX_RANK_SIZE && king_rank < 0; rank++) {
+    for (int file = 0; file < MAX_FILE_SIZE && king_file < 0; file++) {
       if (pieces[rank][file] != NULL) {
 	if (pieces[rank][file]->get_name() == "King" && pieces[rank][file]->get_color() == thisColor) {
 	  king_rank = rank;
 	  king_file = file;
 	}
-      }//------------------------------------------------------> way to exit nested loop early?
+      }
     }
   }
 
@@ -234,6 +273,7 @@ bool ChessBoard::isCheck(color thisColor) {
   return false;
 }
 
+//makes a move
 void ChessBoard::makeMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
   
   pieces[destination_rank][destination_file] = pieces[source_rank][source_file];
@@ -241,6 +281,7 @@ void ChessBoard::makeMove(const int source_file, const int source_rank, const in
   
 }
 
+//reverses a move
 void ChessBoard::reverseMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, ChessPiece* ptr_moved) {
 
   pieces[source_rank][source_file] = pieces[destination_rank][destination_file]; 
@@ -251,6 +292,12 @@ void ChessBoard::reverseMove(const int source_file, const int source_rank, const
 //validates and conducts or rejects submitted move
 bool ChessBoard::submitMove(const char source_square[2], const char destination_square[2]) {
 
+  //checks if game is not already over
+  if (chessBoardState == Over) {
+    cout << "Game is over\n";
+    return false;
+  }
+  
   //captures color of moving party and color of opponent in variables for couts and function calls
   color moving_color = isTurn;
   color waiting_color = (moving_color == White ? Black : White); 
@@ -266,14 +313,15 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
   
   //checks if move is valid for particular piece considering if it would be blocked and if it captures opponent
   if (!actualMove(source_file, source_rank, destination_file, destination_rank)) {
-    cout << moving_color << "'s " << pieces[source_rank][source_file]->get_name() << " cannot move to " << destination_square << "!\n";
+    cout << moving_color << "'s " << pieces[source_rank][source_file]->get_name()
+	 << " cannot move to " << destination_square << "!\n";
     return false;
   }
 
   //creates temp pointer to destination square
   ChessPiece* ptr_moved = pieces[destination_rank][destination_file];
     
-  //make move and set pieceHasMoved
+  //make move and set pieceHasMoved if move is not revered
   makeMove(source_file, source_rank, destination_file, destination_rank);
 
   if (isCheck(moving_color)) {
@@ -281,46 +329,42 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
     reverseMove(source_file, source_rank, destination_file, destination_rank, ptr_moved);
     return false;
   }
+
+  pieces[destination_rank][destination_file]->set_pieceHasMoved();
   
   //print move
   if (ptr_moved == NULL) {
-    cout << isTurn << "'s " << pieces[destination_rank][destination_file]->get_name()
+    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_name()
 	 << " moves from " << source_square << " to " << destination_square << endl;
   }
   else if (ptr_moved != NULL) {
-    cout << isTurn << "'s " << pieces[destination_rank][destination_file]->get_name()
+    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_name()
 	 << " moves from " << source_square << " to " << destination_square << " taking "
-	 << ptr_moved->get_color() << "'s " << ptr_moved->get_name() << endl;
+	 << waiting_color << "'s " << ptr_moved->get_name() << endl;
+    delete ptr_moved;
+    ptr_moved = NULL;
   }
 
+  //check state of game
   if (isCheck(waiting_color)) {
-    cout << waiting_color << " is in check\n";
-  }
-
-//**********post move check structure 
-  //checks if move brought own king in check and reverses move
-
-  /*
-  if (isCheck(IsTurn->King)) {
-    reverseMove();
-    cout << "Your king is in check, try again\n";
-    return false;
+    if (hasLegalMove(waiting_color)) {
+      cout << waiting_color << " is in check\n";
     }
-  
-  //checks if move brings opponent in check and if game is over
-  if (isCheck(!isTurn->King)) {
-    if (hasLegalMove())
-      cout << "!isTurn is in check\n";
-    else if (!hasLegalMove())
-      cout << "!isTurn is checkmate";
+    else if (!hasLegalMove(waiting_color)) {
+      cout << waiting_color << " is in checkmate\n";
+      chessBoardState = Over;
+    }
+  }
+  else if (!hasLegalMove(waiting_color)) {
+    cout << waiting_color << " is in stalemate\n";
+    chessBoardState = Over;
   }
 
-  if (!isCheck(!isTurn->King) && !hasLegalMove())
-    cout << "Stalemate";
-  */
-//**********post move
+  //if the game is over, free the remaining memory of piece objects
+  if (chessBoardState == Over) {
+    removePieces();
+  }
   
-  pieces[destination_rank][destination_file]->set_pieceHasMoved();
   isTurn = (isTurn == White ? Black : White);
   return true;
 }
@@ -328,13 +372,13 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
 
 //***********************************************Notes************************************************
 
-
   /* To do`s */
-  //make opponentHit return a pointer to hit opponent to substitute capture_piece variable
+  //pass rank and files as reference instead of as value
+  //clean code up and implement comments; rename functions
 
-/* 
-hasLegalMove(Color, bool)
--go through every of the opponents pieces
--for every opponent piece, go through board and check if there is a legal move (validMove, isBlocched, isCheck(owncolor)
--if not: checkmate
-*/
+  /* Questions */
+  //enum for piece type (King, Queen etc)?
+  //how to delete objects correctly? Make pointers point to NULL after calling delete?
+  //Need to delete remaining pieces at the end of the game?
+  //Need different header and implementation files for each class, or sufficient without?
+

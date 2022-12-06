@@ -5,6 +5,8 @@
 
 using namespace std;
 
+/**************************************** ChessPiece ************************************/
+
 ChessPiece::ChessPiece(string name, color color) : pieceName(name), pieceColor(color) {
   pieceHasMoved = false;
 }
@@ -25,11 +27,13 @@ void ChessPiece::set_pieceHasMoved() {
   pieceHasMoved = true;
 }
 
-/**************************************** King ***************************************/
+/**************************************** King *****************************************/
 
 King::King(color color) : ChessPiece("King", color) {
   pieceHasMoved = false;
 }
+
+King::~King() {}
 
 bool King::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
   
@@ -53,6 +57,8 @@ Castle::Castle(color color) : ChessPiece("Castle", color) {
   pieceHasMoved = false;
 }
 
+Castle::~Castle() {}
+
 bool Castle::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
@@ -67,6 +73,8 @@ bool Castle::validMove(const int source_file, const int source_rank, const int d
 Bishop::Bishop(color color) : ChessPiece("Bishop", color) {
   pieceHasMoved = false;
 }
+
+Bishop::~Bishop() {}
 
 bool Bishop::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
 
@@ -83,6 +91,8 @@ bool Bishop::validMove(const int source_file, const int source_rank, const int d
 Queen::Queen(color color) : ChessPiece("Queen", color) {
   pieceHasMoved = false;
 }
+
+Queen::~Queen() {}
 
 bool Queen::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
 
@@ -106,6 +116,8 @@ Knight::Knight(color color) : ChessPiece("Knight", color) {
   pieceHasMoved = false;
 }
 
+Knight::~Knight() {}
+
 bool Knight::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
@@ -128,6 +140,8 @@ bool Knight::validMove(const int source_file, const int source_rank, const int d
 Pawn::Pawn(color color) : ChessPiece("Pawn", color) {
   pieceHasMoved = false;
 }
+
+Pawn::~Pawn() {}
 
 //Pawn makeMove validator
 bool Pawn::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool piece_captured) {
