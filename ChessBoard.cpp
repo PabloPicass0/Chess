@@ -11,7 +11,7 @@ using namespace std;
 ChessBoard::ChessBoard() : pieces() { //create empty board --> calling just pieces() makes all pointers point to null
   populate(Black);
   populate(White);
-  chessBoardState = Ongoing;
+  GameOver = false;
   isTurn = White;
   cout << "A new chess game is started!\n";
 }
@@ -51,7 +51,7 @@ void ChessBoard::resetBoard() {
 
   populate(Black);
   populate(White);
-  chessBoardState = Ongoing;
+  GameOver = false;
   isTurn = White;
   cout << "A new chess game is started!\n";
 }
@@ -293,7 +293,7 @@ void ChessBoard::reverseMove(const int source_file, const int source_rank, const
 bool ChessBoard::submitMove(const char source_square[2], const char destination_square[2]) {
 
   //checks if game is not already over
-  if (chessBoardState == Over) {
+  if (GameOver) {
     cout << "Game is over\n";
     return false;
   }
@@ -352,16 +352,16 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
     }
     else if (!hasLegalMove(waiting_color)) {
       cout << waiting_color << " is in checkmate\n";
-      chessBoardState = Over;
+      GameOver = true;
     }
   }
   else if (!hasLegalMove(waiting_color)) {
     cout << waiting_color << " is in stalemate\n";
-    chessBoardState = Over;
+    GameOver = true;
   }
 
   //if the game is over, free the remaining memory of piece objects
-  if (chessBoardState == Over) {
+  if (GameOver) {
     removePieces();
   }
   
@@ -374,11 +374,11 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
 
   /* To do`s */
   //pass rank and files as reference instead of as value
-  //clean code up and implement comments; rename functions
+  //rename functions
+  //Piece type as enum
+  //clean code up and implement comments
 
   /* Questions */
-  //enum for piece type (King, Queen etc)?
-  //how to delete objects correctly? Make pointers point to NULL after calling delete?
-  //Need to delete remaining pieces at the end of the game?
+  //enum for piece type (King, Queen etc)? Confusion with class names?
   //Need different header and implementation files for each class, or sufficient without?
 

@@ -29,8 +29,7 @@ class ChessBoard {
 
   ChessPiece* pieces[MAX_RANK_SIZE][MAX_FILE_SIZE];        //pieces ptr_array
   color isTurn;
-  enum gameState {Over = 0, Ongoing = 1};
-  gameState chessBoardState;
+  bool GameOver;
 
   void populate(color pieces_color);
 
