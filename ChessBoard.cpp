@@ -72,7 +72,7 @@ void ChessBoard::printBoard() {
 }
 
 /* Helper function for printBoard function to print the ranks one by one */
-void ChessBoard::printRank(int rank_num) {
+void ChessBoard::printRank(const int &rank_num) {
   cout << (char) ('8' - rank_num) << " ";
   for (int file = 0; file < MAX_FILE_SIZE; file++) {
     cout << '|' << " ";
@@ -92,7 +92,7 @@ std::ostream& operator << (std::ostream& out_stream, color piece_color) {
 }
 
 /* Checks whether a move is valid */
-bool ChessBoard::preMove(const char source_square[2], const char destination_square[2]) {
+bool ChessBoard::validInput(const char source_square[2], const char destination_square[2]) {
 
   //converts input positions into board parameters (0-7)
   int source_file = source_square[0] - 'A', source_rank = -(source_square[1] - '8');
@@ -141,11 +141,11 @@ bool ChessBoard::preMove(const char source_square[2], const char destination_squ
 }
 
 //Checks wether the particular piece can actually conduct this move
-bool ChessBoard::actualMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank) { 
+bool ChessBoard::validMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank) { 
 
   bool piece_captured = opponentHit(source_file, source_rank, destination_file, destination_rank);
 
-  if (!(pieces[source_rank][source_file]->validMove(source_file, source_rank, destination_file, destination_rank, piece_captured))) {
+  if (!(pieces[source_rank][source_file]->validMovePiece(source_file, source_rank, destination_file, destination_rank, piece_captured))) {
     return false;
   }
 
@@ -158,7 +158,7 @@ bool ChessBoard::actualMove(const int source_file, const int source_rank, const 
 }
 
 //Checks whether the move of a piece is blocked by another piece
-bool ChessBoard::isBlocked(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
+bool ChessBoard::isBlocked(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank) {
   
   if (pieces[destination_rank][destination_file] != NULL) {
     if (pieces[destination_rank][destination_file]->get_color() == pieces[source_rank][source_file]->get_color()) {
@@ -198,7 +198,7 @@ bool ChessBoard::isBlocked(const int source_file, const int source_rank, const i
 }
 
 //checks if a pice of the opponent is captured with the move
-bool ChessBoard::opponentHit(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
+bool ChessBoard::opponentHit(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank) {
 
   if (pieces[destination_rank][destination_file] != NULL) {
     if (pieces[destination_rank][destination_file]->get_color() != pieces[source_rank][source_file]->get_color()) {
@@ -219,7 +219,7 @@ bool ChessBoard::hasLegalMove(color waiting_color) {
 	if (pieces[source_rank][source_file]->get_color() == waiting_color) {
 	  for (int destination_rank = 0; destination_rank < MAX_RANK_SIZE; destination_rank++) {
 	    for (int destination_file = 0; destination_file < MAX_FILE_SIZE; destination_file++) {
-	      if (actualMove(source_file, source_rank, destination_file, destination_rank)) {
+	      if (validMove(source_file, source_rank, destination_file, destination_rank)) {
 		ptr_moved = pieces[destination_rank][destination_file];
 		makeMove(source_file, source_rank, destination_file, destination_rank);
 		if (!isCheck(waiting_color)) {
@@ -262,7 +262,7 @@ bool ChessBoard::isCheck(color thisColor) {
     for (int file = 0; file < MAX_FILE_SIZE; file++) {
       if (pieces[rank][file] != NULL) {
 	if (pieces[rank][file]->get_color() != thisColor) {
-	  if (actualMove(file, rank, king_file, king_rank)) {
+	  if (validMove(file, rank, king_file, king_rank)) {
 	    return true;
 	  }
 	}
@@ -274,7 +274,7 @@ bool ChessBoard::isCheck(color thisColor) {
 }
 
 //makes a move
-void ChessBoard::makeMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank) {
+void ChessBoard::makeMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank) {
   
   pieces[destination_rank][destination_file] = pieces[source_rank][source_file];
   pieces[source_rank][source_file] = NULL;
@@ -282,7 +282,7 @@ void ChessBoard::makeMove(const int source_file, const int source_rank, const in
 }
 
 //reverses a move
-void ChessBoard::reverseMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, ChessPiece* ptr_moved) {
+void ChessBoard::reverseMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, ChessPiece* ptr_moved) {
 
   pieces[source_rank][source_file] = pieces[destination_rank][destination_file]; 
   pieces[destination_rank][destination_file] = ptr_moved;
@@ -307,12 +307,12 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
   int destination_file = destination_square[0] - 'A', destination_rank = -(destination_square[1] - '8');
   
   //conducts pre-move check (is position out of range, whose turn is it etc.)
-  if (!preMove(source_square, destination_square)) {
+  if (!validInput(source_square, destination_square)) {
     return false;
   }
   
   //checks if move is valid for particular piece considering if it would be blocked and if it captures opponent
-  if (!actualMove(source_file, source_rank, destination_file, destination_rank)) {
+  if (!validMove(source_file, source_rank, destination_file, destination_rank)) {
     cout << moving_color << "'s " << pieces[source_rank][source_file]->get_name()
 	 << " cannot move to " << destination_square << "!\n";
     return false;
@@ -373,12 +373,11 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
 //***********************************************Notes************************************************
 
   /* To do`s */
-  //pass rank and files as reference instead of as value
-  //rename functions
-  //Piece type as enum
-  //clean code up and implement comments
+  //Piece type as enum ---> King all caps to avoid same names and overload make print small
+  //clean code up and write docstring
+  //implement castling
 
   /* Questions */
-  //enum for piece type (King, Queen etc)? Confusion with class names?
-  //Need different header and implementation files for each class, or sufficient without?
+  //enum for piece type (King, Queen etc)? Confusion with class names? --> yes
+  //Need different header and implementation files for each class, or sufficient without? --> Yes
 

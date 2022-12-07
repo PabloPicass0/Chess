@@ -35,7 +35,7 @@ King::King(color color) : ChessPiece("King", color) {
 
 King::~King() {}
 
-bool King::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool King::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) {
   
   int rank_move = destination_rank - source_rank;
   int file_move = destination_file - source_file;
@@ -59,7 +59,7 @@ Castle::Castle(color color) : ChessPiece("Castle", color) {
 
 Castle::~Castle() {}
 
-bool Castle::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool Castle::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
   int file_move = destination_file - source_file;
@@ -76,7 +76,7 @@ Bishop::Bishop(color color) : ChessPiece("Bishop", color) {
 
 Bishop::~Bishop() {}
 
-bool Bishop::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool Bishop::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
   int file_move = destination_file - source_file;
@@ -94,7 +94,7 @@ Queen::Queen(color color) : ChessPiece("Queen", color) {
 
 Queen::~Queen() {}
 
-bool Queen::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool Queen::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
   int file_move = destination_file - source_file;
@@ -118,7 +118,7 @@ Knight::Knight(color color) : ChessPiece("Knight", color) {
 
 Knight::~Knight() {}
 
-bool Knight::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) {
+bool Knight::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) {
 
   int rank_move = destination_rank - source_rank;
   int file_move = destination_file - source_file;
@@ -144,7 +144,7 @@ Pawn::Pawn(color color) : ChessPiece("Pawn", color) {
 Pawn::~Pawn() {}
 
 //Pawn makeMove validator
-bool Pawn::validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool piece_captured) {
+bool Pawn::validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool piece_captured) {
 
   int move_direction = 1; //black pawns can only move up
   if (pieceColor == White)

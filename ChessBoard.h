@@ -35,9 +35,9 @@ class ChessBoard {
 
   void removePieces();
 
-  void printRank(int rank_num);
+  void printRank(const int &rank_num);
 
-  bool opponentHit(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  bool opponentHit(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* helper function that checks if an opponent piece is captured */
 
   bool isCheck(color thisColor);
@@ -46,19 +46,19 @@ class ChessBoard {
   bool hasLegalMove(color waiting_color);
   /* checks if a color still has a next valid move */
 
-  void makeMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  void makeMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* conducts move by setting pointers */
 
-  void reverseMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, ChessPiece* ptr_moved);
+  void reverseMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, ChessPiece* ptr_moved);
   /* reverses move if it would have set own king in check */
 
-  bool preMove(const char source_square[2], const char destination_square[2]);
+  bool validInput(const char source_square[2], const char destination_square[2]);
   /* helper function for submitMove to validate if move is ok */
 
-  bool actualMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  bool validMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* validates move for particular piece considering if it is blocked and if it captures opponents */
 		  
-  bool isBlocked(const int source_file, const int source_rank, const int destination_file, const int destination_rank);
+  bool isBlocked(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* helper function that checks if the move of the piece is blocked */
 };
 

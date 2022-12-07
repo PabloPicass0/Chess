@@ -23,7 +23,7 @@ class ChessPiece {
   virtual std::string get_name();
   virtual std::string get_initials();
   virtual void set_pieceHasMoved();
-  virtual bool validMove(int source_file, int source_rank, int destination_file, int destination_rank, bool captures_piece) = 0;
+  virtual bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) = 0;
 };
 
 /**************************************** King *****************************************/
@@ -33,7 +33,7 @@ public:
   King(color color);
   ~King() override;
 
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 /**************************************** Castle ***************************************/
@@ -43,7 +43,7 @@ public:
   Castle(color color);
   ~Castle() override;
   
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 /**************************************** Bishop ***************************************/
@@ -53,7 +53,7 @@ public:
   Bishop(color color);
   ~Bishop() override;
 
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 /**************************************** Queen ****************************************/
@@ -63,7 +63,7 @@ public:
   Queen(color color);
   ~Queen() override;
   
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 /**************************************** Knight ***************************************/
@@ -73,7 +73,7 @@ public:
   Knight(color color);
   ~Knight() override;
   
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 /**************************************** Pawn ****************************************/
@@ -83,7 +83,7 @@ public:
   Pawn(color color);
   ~Pawn() override;
   
-  bool validMove(const int source_file, const int source_rank, const int destination_file, const int destination_rank, bool captures_piece) override;
+  bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
 
 #endif
