@@ -1,11 +1,17 @@
 #include <iostream>
-#include <string>
 #include <cstring>
-#include <cstdlib>
 #include "ChessBoard.h"
 #include "ChessPieces.h"
+#include "King.h"
+#include "Castle.h"
+#include "Bishop.h"
+#include "Queen.h"
+#include "Knight.h"
+#include "Pawn.h"
 
 using namespace std;
+
+/****************************************** ChessBoard ******************************************/
 
 /* ChessBoard constructor populating a board with black and white pieces on initial positions */
 ChessBoard::ChessBoard() : pieces() { //create empty board --> calling just pieces() makes all pointers point to null
@@ -393,5 +399,8 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
   //implement castling
 
   /* Questions */
-  //Need different header and implementation files for each class, or sufficient without? --> Yes
+  //Makefile ok?
+  //Can delete destructors out of child class implementation files?
+  //need to make set_pieceHasMoved() protected?
+  
 

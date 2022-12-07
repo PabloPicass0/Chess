@@ -16,10 +16,6 @@ int main() {
 	cout << '\n';
 
 	cb.printBoard();
-
-	
-
-        cb.printBoard();
 	
 	cb.submitMove("G1", "F3");
 	cout << '\n';
