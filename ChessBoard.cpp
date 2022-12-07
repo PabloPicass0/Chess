@@ -58,28 +58,30 @@ void ChessBoard::resetBoard() {
 
 
 /* prints ChessBoard with initials of pieces to show where pieces are moving */
+
 void ChessBoard::printBoard() {
   cout << "    ";
   for (int file = 0; file < MAX_FILE_SIZE; file++)
-    cout << (char) ('A' + file) << "    ";
+    cout << " " << (char) ('A' + file) << "    ";
 
   cout << '\n';
   for (int rank = 0; rank < MAX_RANK_SIZE; rank++) {
-    cout << "  +----+----+----+----+----+----+----+----+\n";
+    cout << "  +-----+-----+-----+-----+-----+-----+-----+-----+\n";
     printRank(rank);
   }
-  cout << "  +----+----+----+----+----+----+----+----+\n\n";
+  cout << "  +-----+-----+-----+-----+-----+-----+-----+-----+\n\n";
 }
 
 /* Helper function for printBoard function to print the ranks one by one */
+
 void ChessBoard::printRank(const int &rank_num) {
   cout << (char) ('8' - rank_num) << " ";
   for (int file = 0; file < MAX_FILE_SIZE; file++) {
-    cout << '|' << " ";
-    cout << ((pieces[rank_num][file] == NULL) ? "  " : pieces[rank_num][file]->get_initials()) << " ";
+    cout << '|' << "  ";
+    cout << ((pieces[rank_num][file] == NULL) ? " " : pieces[rank_num][file]->get_icon()) << "  ";
   }
   cout << "|\n";
-}
+  } 
 
 //overrides ostream operator to cout enum values
 std::ostream& operator << (std::ostream& out_stream, color piece_color) {
@@ -87,6 +89,20 @@ std::ostream& operator << (std::ostream& out_stream, color piece_color) {
     {
       case Black: out_stream << "Black"; break;
       case White: out_stream << "White"; break;
+    }
+  return out_stream;  
+}
+
+//overrides ostream operator to cout pieceType strings
+std::ostream& operator << (std::ostream& out_stream, type piece_type) {
+  switch(piece_type)   //uses switch to assign colors to enum values
+    {
+      case PAWN: out_stream << "Pawn"; break;
+      case CASTLE: out_stream << "Castle"; break;
+      case KNIGHT: out_stream << "Knight"; break;
+      case BISHOP: out_stream << "Bishop"; break;
+      case QUEEN: out_stream << "Queen"; break;
+      case KING: out_stream << "King"; break;
     }
   return out_stream;  
 }
@@ -166,7 +182,7 @@ bool ChessBoard::isBlocked(const int &source_file, const int &source_rank, const
     }
   }
 
-  if (pieces[source_rank][source_file]->get_name() == "Knight")  //Knights can jump
+  if (pieces[source_rank][source_file]->get_type() == KNIGHT)  //Knights can jump
     return false;
  
   int rank_move = destination_rank - source_rank;
@@ -249,7 +265,7 @@ bool ChessBoard::isCheck(color thisColor) {
   for (int rank = 0; rank < MAX_RANK_SIZE && king_rank < 0; rank++) {
     for (int file = 0; file < MAX_FILE_SIZE && king_file < 0; file++) {
       if (pieces[rank][file] != NULL) {
-	if (pieces[rank][file]->get_name() == "King" && pieces[rank][file]->get_color() == thisColor) {
+	if (pieces[rank][file]->get_type() == KING && pieces[rank][file]->get_color() == thisColor) {
 	  king_rank = rank;
 	  king_file = file;
 	}
@@ -313,7 +329,7 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
   
   //checks if move is valid for particular piece considering if it would be blocked and if it captures opponent
   if (!validMove(source_file, source_rank, destination_file, destination_rank)) {
-    cout << moving_color << "'s " << pieces[source_rank][source_file]->get_name()
+    cout << moving_color << "'s " << pieces[source_rank][source_file]->get_type()
 	 << " cannot move to " << destination_square << "!\n";
     return false;
   }
@@ -334,13 +350,13 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
   
   //print move
   if (ptr_moved == NULL) {
-    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_name()
+    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_type()
 	 << " moves from " << source_square << " to " << destination_square << endl;
   }
   else if (ptr_moved != NULL) {
-    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_name()
+    cout << moving_color << "'s " << pieces[destination_rank][destination_file]->get_type()
 	 << " moves from " << source_square << " to " << destination_square << " taking "
-	 << waiting_color << "'s " << ptr_moved->get_name() << endl;
+	 << waiting_color << "'s " << ptr_moved->get_type() << endl;
     delete ptr_moved;
     ptr_moved = NULL;
   }
@@ -373,11 +389,9 @@ bool ChessBoard::submitMove(const char source_square[2], const char destination_
 //***********************************************Notes************************************************
 
   /* To do`s */
-  //Piece type as enum ---> King all caps to avoid same names and overload make print small
   //clean code up and write docstring
   //implement castling
 
   /* Questions */
-  //enum for piece type (King, Queen etc)? Confusion with class names? --> yes
   //Need different header and implementation files for each class, or sufficient without? --> Yes
 

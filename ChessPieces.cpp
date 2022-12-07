@@ -7,7 +7,8 @@ using namespace std;
 
 /**************************************** ChessPiece ************************************/
 
-ChessPiece::ChessPiece(string name, color color) : pieceName(name), pieceColor(color) {
+ChessPiece::ChessPiece(type type, color color) : pieceType(type), pieceColor(color) {
+  pieceIcon = "undefined";
   pieceHasMoved = false;
 }
 
@@ -15,13 +16,22 @@ color ChessPiece::get_color() {
   return pieceColor;
 }
 
-string ChessPiece::get_name() {
+/* string ChessPiece::get_name() {
   return pieceName;
+  } */
+
+std::string ChessPiece::get_icon() {
+  return pieceIcon;
 }
 
-string ChessPiece::get_initials() {
-  return pieceName.substr(0, 2);
+
+type ChessPiece::get_type() {
+  return pieceType;
 }
+
+/* string ChessPiece::get_initials() {
+  return pieceName.substr(0, 2);
+  } */
 
 void ChessPiece::set_pieceHasMoved() {
   pieceHasMoved = true;
@@ -29,7 +39,8 @@ void ChessPiece::set_pieceHasMoved() {
 
 /**************************************** King *****************************************/
 
-King::King(color color) : ChessPiece("King", color) {
+King::King(color color) : ChessPiece(KING, color) {
+  pieceIcon = ((color == White) ? "♔" : "♚");
   pieceHasMoved = false;
 }
 
@@ -53,7 +64,8 @@ bool King::validMovePiece(const int &source_file, const int &source_rank, const 
 
 /**************************************** Castle ***************************************/
 
-Castle::Castle(color color) : ChessPiece("Castle", color) {
+Castle::Castle(color color) : ChessPiece(CASTLE, color) {
+  pieceIcon = ((color == White) ? "♖" : "♜");
   pieceHasMoved = false;
 }
 
@@ -70,7 +82,8 @@ bool Castle::validMovePiece(const int &source_file, const int &source_rank, cons
 
 /**************************************** Bishop ***************************************/
 
-Bishop::Bishop(color color) : ChessPiece("Bishop", color) {
+Bishop::Bishop(color color) : ChessPiece(BISHOP, color) {
+  pieceIcon = ((color == White) ? "♗" : "♝");
   pieceHasMoved = false;
 }
 
@@ -88,7 +101,8 @@ bool Bishop::validMovePiece(const int &source_file, const int &source_rank, cons
 
 /**************************************** Queen ****************************************/
 
-Queen::Queen(color color) : ChessPiece("Queen", color) {
+Queen::Queen(color color) : ChessPiece(QUEEN, color) {
+  pieceIcon = ((color == White) ? "♕" : "♛");
   pieceHasMoved = false;
 }
 
@@ -112,7 +126,8 @@ bool Queen::validMovePiece(const int &source_file, const int &source_rank, const
 
 /**************************************** Knight ***************************************/
 
-Knight::Knight(color color) : ChessPiece("Knight", color) {
+Knight::Knight(color color) : ChessPiece(KNIGHT, color) {
+  pieceIcon = ((color == White) ? "♘" : "♞");
   pieceHasMoved = false;
 }
 
@@ -137,7 +152,8 @@ bool Knight::validMovePiece(const int &source_file, const int &source_rank, cons
 /**************************************** Pawn ****************************************/
 
 //Pawn constructor
-Pawn::Pawn(color color) : ChessPiece("Pawn", color) {
+Pawn::Pawn(color color) : ChessPiece(PAWN, color) {
+  pieceIcon = ((color == White) ? "♙" : "♟");
   pieceHasMoved = false;
 }
 

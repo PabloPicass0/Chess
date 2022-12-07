@@ -2,6 +2,7 @@
 #define CHESSPIECES_H
 
 #include "color.h"
+#include "pieceType.h"
 #include "ChessBoard.h"
 #include <string>
 
@@ -12,16 +13,20 @@ class ChessBoard;
 
 class ChessPiece {
  protected:
-  ChessPiece(std::string name, color color);
-  std::string pieceName;
+  ChessPiece(type type, color color);
+  //std::string pieceName;
+  type pieceType;
   color pieceColor;
+  std::string pieceIcon;
   bool pieceHasMoved;
   
  public:
   virtual ~ChessPiece() {};
   virtual color get_color();
-  virtual std::string get_name();
-  virtual std::string get_initials();
+  //virtual std::string get_name();
+  virtual std::string get_icon();
+  virtual type get_type();
+  //virtual std::string get_initials();
   virtual void set_pieceHasMoved();
   virtual bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) = 0;
 };
@@ -35,6 +40,7 @@ public:
 
   bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank, bool captures_piece) override;
 };
+
 
 /**************************************** Castle ***************************************/
 
