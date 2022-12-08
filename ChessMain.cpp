@@ -6,7 +6,7 @@
 using std::cout;
 
 int main() {
-  
+
   
 	cout << "========================\n";
 	cout << "Testing the Chess Engine\n";
@@ -82,8 +82,6 @@ int main() {
 	cb.submitMove("D3", "G6");
 	cout << '\n';
 
-	
-
   
     // Test for game ending in stalemate
     
@@ -118,11 +116,10 @@ int main() {
     cb.submitMove("D4", "D5");
     cb.submitMove("B4", "A5");
     cb.submitMove("C2", "C4");
-    cb.printBoard();
     cb.submitMove("E4", "E3");
     cout << "\n\n";
 
-    
-
+    cb.printBoard();
+ 
     return 0;
 }

@@ -5,11 +5,13 @@ using namespace std;
 
 /**************************************** ChessPiece ************************************/
 
+/* Constructor */
 ChessPiece::ChessPiece(type type, color color) : pieceType(type), pieceColor(color) {
   pieceIcon = "undefined";
   pieceHasMoved = false;
 }
 
+/* Getter and setter functions */
 color ChessPiece::get_color() {
   return pieceColor;
 }

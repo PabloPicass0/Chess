@@ -9,15 +9,15 @@ class Pawn : public ChessPiece {
   
 public:
 
-  /* Constructor */
   Pawn(color color);
+  /* Constructor */
 
-  /* Destructor */
   ~Pawn() override;
+  /* Destructor */
 
-  /* Checks the validity of a particular move for the piece "Pawn" */
   bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file,
 		      const int &destination_rank, bool captures_piece) override;
+  /* Checks the validity of a particular move for the piece "Pawn" */
 };
 
 #endif

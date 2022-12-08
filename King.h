@@ -8,16 +8,16 @@
 class King : public ChessPiece {
   
 public:
-
-  /* Constructor */
+  
   King(color color);
+  /* Constructor */
 
-  /* Destructor */
   ~King() override;
+  /* Destructor */
 
-  /* Checks the validity of a particular move for the piece "King" */
   bool validMovePiece(const int &source_file, const int &source_rank, const int &destination_file,
 		      const int &destination_rank, bool captures_piece) override;
+  /* Checks the validity of a particular move for the piece "King" */
 };
 
 #endif

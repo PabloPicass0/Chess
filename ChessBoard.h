@@ -20,12 +20,17 @@ class ChessBoard {
  public:
   
   ChessBoard();
-  /* Chessboard constructor that sets up a chess board:
+  /* ChessBoard constructor that sets up a chess board:
      - Creates a two-dimensional array of chess piece pointers, initially pointing to NULL
      - Calls function "populate" that creates chess piece objects and assigns pointers 
      - Sets the boolean variable "GameOver" (private attribute) to false to start a game 
      - Sets the color variable "isTurn" (private attribute) to "White" - White moves first
      - Prints: "A new chess game is started!" */
+  
+  ~ChessBoard();
+  /* ChessBoard destructor that loops through the array of pointers and deletes ojects
+     - Calls function "removePieces" to delete raminaing pieces objects
+     - Is called implicitly when main() ends */ 
   
   void resetBoard();
   /* Removes all remaining objects and repopulates the board with new pieces 
@@ -75,27 +80,27 @@ class ChessBoard {
 
   bool validMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* Helper function of submitMove: checks whether a move is valid for particular piece and if the move is blocked
-     @params: the source and the destination position of a move passed as row and column numbers  
+     @params files/ranks: the source and the destination position of a move passed as row and column numbers  
      @return: true if move is valid, that is the piece can conduct the move and is not blocked by another piece */
 
   bool isBlocked(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* Helper function of validMove: checks if the move of the moving piece is blocked 
-     @params: the source and the destination position of a move passed as row and column numbers 
+     @params files/ranks: the source and the destination position of a move passed as row and column numbers 
      @return: true if the move of the moving piece is blocked (move not permissible) */
 
   bool opponentHit(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* Helper function of validMove: checks if a piece captures another piece with a particular move
-     @params: the source and the destination position of a move passed as row and column numbers
+     @params files/ranks: the source and the destination position of a move passed as row and column numbers
      @return: true if an opponent piece is captured, false otherwise */
 
   void makeMove(const int &source_file, const int &source_rank, const int &destination_file, const int &destination_rank);
   /* Helper function of submitMove: makes a move by making receiving pointer point to moving object, and source pointer point to NULL 
-     @params: the source and the destination position of a move passed as row and column numbers */
+     @params files/ranks: the source and the destination position of a move passed as row and column numbers */
 
   void reverseMove(const int &source_file, const int &source_rank, const int &destination_file,
 		   const int &destination_rank, ChessPiece* ptr_moved);
   /* Helper function of submitMove: reverses a move if the move sets the own king in check 
-     @params ints: the source and the destination position of a move passed as row and column numbers 
+     @params files/ranks: the source and the destination position of a move passed as row and column numbers 
      @param ptr_moved: a pointer pointing to the destination square; used to not loose a captures piece */
 
   bool isCheck(color thisColor);
