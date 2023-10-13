@@ -1,32 +1,40 @@
+# Directories
+HEADER_DIR = Header_Files
+IMPL_DIR = Implementation_Files
+
+# Compiler and Flags
+CXX = g++
+CXXFLAGS = -g -Wall -I$(HEADER_DIR)
+
 chess: ChessMain.o ChessBoard.o ChessPieces.o King.o Castle.o Bishop.o Queen.o Knight.o Pawn.o
-	g++ ChessMain.o ChessBoard.o ChessPieces.o King.o Castle.o Bishop.o Queen.o Knight.o Pawn.o -o chess
+	$(CXX) ChessMain.o ChessBoard.o ChessPieces.o King.o Castle.o Bishop.o Queen.o Knight.o Pawn.o -o chess
 
-ChessMain.o: ChessMain.cpp ChessBoard.h
-	g++ -c -g -Wall ChessMain.cpp
+ChessMain.o: $(IMPL_DIR)/ChessMain.cpp $(HEADER_DIR)/ChessBoard.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/ChessMain.cpp
 
-ChessBoard.o: ChessBoard.cpp ChessBoard.h ChessPieces.h King.h Castle.h Bishop.h Queen.h Knight.h Pawn.h
-	g++ -c -g -Wall ChessBoard.cpp
+ChessBoard.o: $(IMPL_DIR)/ChessBoard.cpp $(HEADER_DIR)/ChessBoard.h $(HEADER_DIR)/ChessPieces.h $(HEADER_DIR)/King.h $(HEADER_DIR)/Castle.h $(HEADER_DIR)/Bishop.h $(HEADER_DIR)/Queen.h $(HEADER_DIR)/Knight.h $(HEADER_DIR)/Pawn.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/ChessBoard.cpp
 
-ChessPieces.o: ChessPieces.cpp color.h pieceType.h 
-	g++ -c -g -Wall ChessPieces.cpp
+ChessPieces.o: $(IMPL_DIR)/ChessPieces.cpp $(HEADER_DIR)/color.h $(HEADER_DIR)/pieceType.h 
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/ChessPieces.cpp
 
-King.o: King.cpp King.h ChessPieces.h
-	g++ -c -g -Wall King.cpp
+King.o: $(IMPL_DIR)/King.cpp $(HEADER_DIR)/King.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/King.cpp
 
-Castle.o: Castle.cpp Castle.h ChessPieces.h
-	g++ -c -g -Wall Castle.cpp
+Castle.o: $(IMPL_DIR)/Castle.cpp $(HEADER_DIR)/Castle.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/Castle.cpp
 
-Bishop.o: Bishop.cpp Bishop.h ChessPieces.h
-	g++ -c -g -Wall Bishop.cpp
+Bishop.o: $(IMPL_DIR)/Bishop.cpp $(HEADER_DIR)/Bishop.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/Bishop.cpp
 
-Queen.o: Queen.cpp Queen.h ChessPieces.h
-	g++ -c -g -Wall Queen.cpp
+Queen.o: $(IMPL_DIR)/Queen.cpp $(HEADER_DIR)/Queen.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/Queen.cpp
 
-Knight.o: Knight.cpp Knight.h ChessPieces.h
-	g++ -c -g -Wall Knight.cpp
+Knight.o: $(IMPL_DIR)/Knight.cpp $(HEADER_DIR)/Knight.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/Knight.cpp
 
-Pawn.o: Pawn.cpp Pawn.h ChessPieces.h
-	g++ -c -g -Wall Pawn.cpp
+Pawn.o: $(IMPL_DIR)/Pawn.cpp $(HEADER_DIR)/Pawn.h $(HEADER_DIR)/ChessPieces.h
+	$(CXX) $(CXXFLAGS) -c $(IMPL_DIR)/Pawn.cpp
 
 clean:
 	rm -f *.o chess
